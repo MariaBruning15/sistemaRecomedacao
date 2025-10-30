@@ -1,0 +1,5 @@
+package enums;
+
+public enum Categoria {
+    ROMANCE, TERROR, FICCAO_CIENTIFICA, FANTASIA, MISTERIO, BIOGRAFIA, AUTOAJUDA
+}
