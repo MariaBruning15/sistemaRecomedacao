@@ -37,43 +37,43 @@ class No {
     
     
     public void inserir(Livro livro) {
-        raiz = inserirRecursive(raiz, livro, 0); 
+        raiz = inserirRecursivo(raiz, livro, 0); 
     }
 
-    private No inserirRecursive(No atual, Livro livro, int depth) {
+    private No inserirRecursivo(No atual, Livro livro, int depth) {
         
         if (atual == null) {
             return new No(livro); 
         } 
 
-        int dimension = depth % K; 
+        int dimensao = depth % K; 
         
-        if (dimension == 0) { 
+        if (dimensao == 0) { 
             
             if (Double.compare(livro.getNotaMedia(), atual.livro.getNotaMedia()) < 0) { 
-                atual.esquerda = inserirRecursive(atual.esquerda, livro, depth + 1); 
+                atual.esquerda = inserirRecursivo(atual.esquerda, livro, depth + 1); 
             } else { 
-                atual.direita = inserirRecursive(atual.direita, livro, depth + 1); 
+                atual.direita = inserirRecursivo(atual.direita, livro, depth + 1); 
             }
         } else { 
             String novaCategoria = livro.getCategoria().name();
             String atualCategoria = atual.livro.getCategoria().name();
             
             if (novaCategoria.compareTo(atualCategoria) < 0) { 
-                atual.esquerda = inserirRecursive(atual.esquerda, livro, depth + 1); 
+                atual.esquerda = inserirRecursivo(atual.esquerda, livro, depth + 1); 
             } else {
-                atual.direita = inserirRecursive(atual.direita, livro, depth + 1); 
+                atual.direita = inserirRecursivo(atual.direita, livro, depth + 1); 
             }
         } 
         
         return atual; 
     }
     
-    public Livro search(Livro livroParaBuscar) {
-        return searchRecursive(raiz, livroParaBuscar, 0);
+    public Livro busca(Livro livroParaBuscar) {
+        return buscaRecursivo(raiz, livroParaBuscar, 0);
     }
 
-    private Livro searchRecursive(No current, Livro livroParaBuscar, int depth) {
+    private Livro buscaRecursivo(No current, Livro livroParaBuscar, int depth) {
         if (current == null) {
             return null;
         }
@@ -82,33 +82,33 @@ class No {
             return current.livro;
         }
 
-        int dimension = depth % K; 
+        int dimensao = depth % K; 
         
-        if (dimension == 0) { 
+        if (dimensao == 0) { 
             if (Double.compare(livroParaBuscar.getNotaMedia(), current.livro.getNotaMedia()) < 0) {
-                return searchRecursive(current.esquerda, livroParaBuscar, depth + 1);
+                return buscaRecursivo(current.esquerda, livroParaBuscar, depth + 1);
             } else {
-                return searchRecursive(current.direita, livroParaBuscar, depth + 1);
+                return buscaRecursivo(current.direita, livroParaBuscar, depth + 1);
             }
         } else { 
             String buscarCategoria = livroParaBuscar.getCategoria().name();
             String currentCategoria = current.livro.getCategoria().name();
             
             if (buscarCategoria.compareTo(currentCategoria) < 0) {
-                return searchRecursive(current.esquerda, livroParaBuscar, depth + 1);
+                return buscaRecursivo(current.esquerda, livroParaBuscar, depth + 1);
             } else {
-                return searchRecursive(current.direita, livroParaBuscar, depth + 1);
+                return buscaRecursivo(current.direita, livroParaBuscar, depth + 1);
             }
         }
     }
     
-    public List<Livro> rangeSearch(double minNota, double maxNota, String minCategoria, String maxCategoria) {
+    public List<Livro> buscaIntervalo(double minNota, double maxNota, String minCategoria, String maxCategoria) {
         List<Livro> resultados = new ArrayList<>();
-        rangeSearchRecursive(raiz, minNota, maxNota, minCategoria, maxCategoria, 0, resultados);
+        buscaIntervaloRecursivo(raiz, minNota, maxNota, minCategoria, maxCategoria, 0, resultados);
         return resultados;
     }
 
-    private void rangeSearchRecursive(No atual, double minNota, double maxNota, 
+    private void buscaIntervaloRecursivo(No atual, double minNota, double maxNota, 
                                       String minCategoria, String maxCategoria, 
                                       int depth, List<Livro> resultados) {
         
@@ -120,23 +120,23 @@ class No {
             resultados.add(atual.livro);
         }
 
-        int dimension = depth % K;
+        int dimensao = depth % K;
         
         String currentCategoryName = atual.livro.getCategoria().name();
 
-        if (dimension == 0) { 
+        if (dimensao == 0) { 
             if (minNota < atual.livro.getNotaMedia()) {
-                rangeSearchRecursive(atual.esquerda, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
+            	buscaIntervaloRecursivo(atual.esquerda, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
             }
             if (maxNota > atual.livro.getNotaMedia()) {
-                rangeSearchRecursive(atual.direita, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
+            	buscaIntervaloRecursivo(atual.direita, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
             }
         } else { 
             if (minCategoria.compareTo(currentCategoryName) < 0) {
-                rangeSearchRecursive(atual.esquerda, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
+            	buscaIntervaloRecursivo(atual.esquerda, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
             }
             if (maxCategoria.compareTo(currentCategoryName) > 0) {
-                rangeSearchRecursive(atual.direita, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
+            	buscaIntervaloRecursivo(atual.direita, minNota, maxNota, minCategoria, maxCategoria, depth + 1, resultados);
             }
         }
     }
@@ -172,4 +172,93 @@ class No {
         
         inOrderReverseRecursive(atual.getEsquerda(), lista);
     }
+    
+
+    private int compareLivrosByDimensao(Livro livro1, Livro livro2, int dimensao) {
+        if (dimensao == 0) { 
+            return Double.compare(livro1.getNotaMedia(), livro2.getNotaMedia());
+        } else { 
+            return livro1.getCategoria().name().compareTo(livro2.getCategoria().name());
+        }
+    }
+    
+
+    private No buscaMinRecursiva(No atual, int encontrarDimensao, int depth) {
+        if (atual == null) {
+            return null;
+        }
+
+        int currentDimension = depth % K;
+
+        if (currentDimension == encontrarDimensao) {
+          
+            if (atual.getEsquerda() == null) {
+                return atual;
+            }
+            return buscaMinRecursiva(atual.getEsquerda(), encontrarDimensao, depth + 1);
+        }
+
+        No minNode = atual;
+        
+        No minEsquerda = buscaMinRecursiva(atual.getEsquerda(), encontrarDimensao, depth + 1);
+        if (minEsquerda != null && compareLivrosByDimensao(minEsquerda.livro, minNode.livro, encontrarDimensao) < 0) {
+            minNode = minEsquerda;
+        }
+
+        No minDireita = buscaMinRecursiva(atual.getDireita(), encontrarDimensao, depth + 1);
+        if (minDireita != null && compareLivrosByDimensao(minDireita.livro, minNode.livro, encontrarDimensao) < 0) {
+            minNode = minDireita;
+        }
+
+        return minNode;
+    }
+    
+
+    public No removerRecursivo(No atual, Long idLivro, int depth) {
+        if (atual == null) {
+            return null;
+        }
+        
+        if (idLivro.equals(atual.livro.getId())) {
+            
+            int dimension = depth % K;
+            
+            if (atual.getEsquerda() == null && atual.getDireita() == null) {
+                return null;
+            }
+
+            if (atual.getDireita() != null) {
+                No minNode = buscaMinRecursiva(atual.getDireita(), dimension, depth + 1);
+                
+                atual.livro = minNode.livro; 
+                
+                atual.setDireita(removerRecursivo(atual.getDireita(), minNode.livro.getId(), depth + 1));
+                
+            } else { 
+                No temp = atual.getEsquerda();
+                
+                atual.livro = temp.livro; 
+                
+                atual.setEsquerda(removerRecursivo(atual.getEsquerda(), temp.livro.getId(), depth + 1));
+                
+                atual.setDireita(atual.getEsquerda());
+                atual.setEsquerda(null);
+            }
+            
+            return atual;
+        }
+        
+        atual.setEsquerda(removerRecursivo(atual.getEsquerda(), idLivro, depth + 1));
+        
+        atual.setDireita(removerRecursivo(atual.getDireita(), idLivro, depth + 1));
+        
+        return atual;
+    }
+    
+    public void atualizar(Livro livroAtualizado) {
+        this.raiz = removerRecursivo(this.raiz, livroAtualizado.getId(), 0);
+        
+        inserir(livroAtualizado); 
+    }
+   
 } 
