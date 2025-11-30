@@ -25,7 +25,22 @@ public class Livro {
     private double mediaNotas;
     private int numeroPaginas;
     private String sinopse;
+    private Double notaMedia;
+    private Long totalNotas;
+    private Long contadorAvaliacoes;
+    
+    
+    public void setNotaMedia(Double notaMedia) {
+        this.notaMedia = notaMedia;
+    }
 
+    public void setTotalNotas(Long totalNotas) {
+        this.totalNotas = totalNotas;
+    }
+
+    public void setContadorAvaliacoes(Long contadorAvaliacoes) {
+        this.contadorAvaliacoes = contadorAvaliacoes;
+    }
 
     public Long getId() {
         return id;
@@ -60,5 +75,20 @@ public class Livro {
         this.anoPublicacao = anoPublicacao;
     }
 
-    
+	public int getNotaMedia() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public Categoria getCategoria() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Long getTotalNotas() {
+	        return totalNotas;
+	    }
+	public Long getContadorAvaliacoes() {
+	        return contadorAvaliacoes;
+	    }
 }
