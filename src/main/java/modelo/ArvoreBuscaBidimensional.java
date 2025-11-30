@@ -152,4 +152,24 @@ class No {
                               
         return notaOk && categoriaOk; 
     }
+    
+ 
+    public List<Livro> getLivrosMaisPopulares() {
+        List<Livro> populares = new ArrayList<>();
+        inOrderReverseRecursive(raiz, populares); 
+        return populares;
+    }
+
+    private void inOrderReverseRecursive(No atual, List<Livro> lista) {
+        
+        if (atual == null) {
+            return;
+        }
+        
+        inOrderReverseRecursive(atual.getDireita(), lista);
+        
+        lista.add(atual.livro);
+        
+        inOrderReverseRecursive(atual.getEsquerda(), lista);
+    }
 } 
